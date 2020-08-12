@@ -226,3 +226,22 @@ org.springframework.data.elasticsearch.UncategorizedElasticsearchException: Elas
 - 查询所有索引：GET _cat/indices?v_
 - _删除索引：DELETE blog_
 - 查询某一索引所有值：GET blog/_search
+
+## 11、使用建造者模式@Builder修改映射类，使用建造者模式save对象
+
+在映射类上加入`lombok`中的`@Builder`标签，同用全部对象的构造方法，使之成为建造类，在保存数据时使用：
+
+```java
+articleRepository.save(Article.builder().title("java8实战").authors(asList(new Author("Rose"),new Author("Luwar"))).build());
+articleRepository.save(Article.builder().title("jdk8实战").authors(asList(new Author("Rose1"),new Author("Luwar1"))).build());
+```
+
+查询所有值并打印出来：
+
+```java
+ Iterable<Article> all = articleRepository.findAll();
+        all.forEach((s)->{
+            System.out.println(s);
+        });
+```
+

@@ -1,5 +1,6 @@
 package com.hejz.springbootelasticsearch;
 
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -14,6 +15,7 @@ import java.util.List;
  * @Date: 2020/8/11 10:29
  */
 @Data
+@Builder
 @Document(indexName = "blog")
 public class Article {
     @Id
@@ -26,5 +28,16 @@ public class Article {
 
     public Article( String title) {
         this.title = title;
+    }
+
+    public Article(String title, List<Author> authors) {
+        this.title = title;
+        this.authors = authors;
+    }
+
+    public Article(String id, String title, List<Author> authors) {
+        this.id = id;
+        this.title = title;
+        this.authors = authors;
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static java.util.Arrays.asList;
@@ -47,6 +48,8 @@ class SpringbootelasticsearchApplicationTests {
         Article article = new Article("Spring Data Elasticsearch");
         article.setAuthors(asList(new Author("John"), new Author("Doe")));
         articleRepository.save(article);
+        articleRepository.save(Article.builder().title("java8实战").authors(asList(new Author("Rose"),new Author("Luwar"))).build());
+        articleRepository.save(Article.builder().title("jdk8实战").authors(asList(new Author("Rose1"),new Author("Luwar1"))).build());
     }
     @Test
     public void update(){
@@ -84,6 +87,13 @@ class SpringbootelasticsearchApplicationTests {
         System.out.println(byTitle);
     }
 
+    @Test
+    public void selectAll(){
+        Iterable<Article> all = articleRepository.findAll();
+        all.forEach((s)->{
+            System.out.println(s);
+        });
+    }
 
     @Test
     public void select() {
