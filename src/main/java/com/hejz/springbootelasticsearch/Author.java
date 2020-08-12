@@ -9,7 +9,6 @@ import lombok.Data;
  * @Date: 2020/8/11 10:30
  */
 @Data
-@Builder
 public class Author {
     private String name;
 
