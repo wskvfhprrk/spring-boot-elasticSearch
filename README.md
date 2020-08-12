@@ -231,6 +231,8 @@ org.springframework.data.elasticsearch.UncategorizedElasticsearchException: Elas
 
 在映射类上加入`lombok`中的`@Builder`标签，同用全部对象的构造方法，使之成为建造类，在保存数据时使用：
 
+**建造者模式是使用多个对象一步一步构建成一个复杂对象，它提供了一种创建对象的最佳方式。与工厂模式区别是：建造者模式更加关注与零件装配的顺序。**
+
 ```java
 articleRepository.save(Article.builder().title("java8实战").authors(asList(new Author("Rose"),new Author("Luwar"))).build());
 articleRepository.save(Article.builder().title("jdk8实战").authors(asList(new Author("Rose1"),new Author("Luwar1"))).build());
