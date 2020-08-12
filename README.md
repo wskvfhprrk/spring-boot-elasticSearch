@@ -1,4 +1,4 @@
-# spring-boot-elasticSearch
+# spring boot elasticsearch测试
 
 ## 1、docker安装elashticsearch
 
@@ -157,7 +157,61 @@ Page<Article> articleByAuthorName
 
 有两种方法可以为Spring Data Elasticsearch存储库定义自定义查询。一种方法是使用*@Query*注释，如3节所示。
 
-## 8、遇到问题
+另一个选择是使用查询生成器来创建我们的自定义查询。
+
+必须搜索标题中带有“ *data* ” 一词的文章，我们只需创建一个在*标题*上带有Filter 的*NativeSearchQueryBuilder即可**：*
+
+```java
+Query searchQuery = new NativeSearchQueryBuilder()
+   .withFilter(regexpQuery("title", ".*data.*"))
+   .build();
+SearchHits<Article> articles = 
+   elasticsearchTemplate.search(searchQuery, Article.class, IndexCoordinates.of("blog");
+```
+
+## 8、更新和删除
+
+为了更新文档，我们首先必须检索它：
+
+```java
+String articleTitle = "Spring Data Elasticsearch";
+Query searchQuery = new NativeSearchQueryBuilder()
+  .withQuery(matchQuery("title", articleTitle).minimumShouldMatch("75%"))
+  .build();
+ 
+SearchHits<Article> articles = 
+   elasticsearchTemplate.search(searchQuery, Article.class, IndexCoordinates.of("blog");
+Article article = articles.getSearchHit(0).getContent();
+```
+
+然后，我们可以仅通过使用其评估器编辑对象的内容来对文档进行更改：
+
+```java
+article.setTitle("Getting started with Search Engines");
+articleRepository.save(article);
+```
+
+至于删除，有几种选择。我们可以检索文档并使用*delete*方法将其*删除*：
+
+```java
+articleRepository.delete(article);
+```
+
+我们也可以通过已知的*ID*将其删除：
+
+```java
+articleRepository.deleteById("article_id");
+```
+
+还可以创建自定义*deleteBy*查询并利用Elasticsearch提供的批量删除功能：
+
+```java
+articleRepository.deleteByTitle("title");
+```
+
+
+
+## 9、遇到问题
 
 ### 建立索引出现的问题
 
@@ -167,7 +221,7 @@ org.springframework.data.elasticsearch.UncategorizedElasticsearchException: Elas
 
 这个问题是由于建立elasticsearch索引要使用下划线，不能使用驼峰建立命名。
 
-## 9、kibana的dev tools命令
+## 10、kibana的dev tools命令
 
 - 查询所有索引：GET _cat/indices?v_
 - _删除索引：DELETE blog_

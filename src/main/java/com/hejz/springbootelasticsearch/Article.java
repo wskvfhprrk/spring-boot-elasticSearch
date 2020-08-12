@@ -14,7 +14,7 @@ import java.util.List;
  * @Date: 2020/8/11 10:29
  */
 @Data
-@Document(indexName = "blog", type = "article")
+@Document(indexName = "blog")
 public class Article {
     @Id
     private String id;
